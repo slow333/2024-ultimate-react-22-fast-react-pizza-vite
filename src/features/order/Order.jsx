@@ -1,10 +1,8 @@
+/* eslint-disable no-unused-vars */
 // Test ID: IIDSAT
-
-import {
-  calcMinutesLeft,
-  formatCurrency,
-  formatDate,
-} from "../../utils/helpers";
+// noinspection JSUnusedLocalSymbols
+import {calcMinutesLeft, formatCurrency, formatDate,} from "../../utils/helpers";
+import {getMyCity} from "../../services/getMyCity.js";
 
 const order = {
   id: "ABCDEF",
@@ -42,44 +40,53 @@ const order = {
 };
 
 function Order() {
-  // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
+  // Everyone can search for all orders,
+  // so for privacy reasons we're gonna exclude names or address,
+  // these are only for the restaurant staff
   const {
-    // id,
-    status,
-    priority,
-    priorityPrice,
-    orderPrice,
-    estimatedDelivery,
-    // cart,
+    id, status, priority, priorityPrice,
+    orderPrice, estimatedDelivery, cart,
   } = order;
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
+  const data = getMyCity();
+  const {city, countryName, locality,latitude, longitude} = data;
   return (
-    <div>
-      <div>
-        <h2>Status</h2>
+       <div>
+         <div>
+           <h2>Status</h2>
+           <div>
+             {priority && <span>Priority</span>}
+             <span>{status} order</span>
+           </div>
+         </div>
+         <div>
+           <p>
+             {deliveryIn >= 0
+                  ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
+                  : "Order should have arrived"}
+           </p>
+           <p>(Estimated delivery: {formatDate(estimatedDelivery)})</p>
+         </div>
 
-        <div>
-          {priority && <span>Priority</span>}
-          <span>{status} order</span>
-        </div>
-      </div>
-
-      <div>
-        <p>
-          {deliveryIn >= 0
-            ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
-            : "Order should have arrived"}
-        </p>
-        <p>(Estimated delivery: {formatDate(estimatedDelivery)})</p>
-      </div>
-
-      <div>
-        <p>Price pizza: {formatCurrency(orderPrice)}</p>
-        {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
-        <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
-      </div>
-    </div>
+         <div key={id}>
+           <p>Price pizza: {formatCurrency(orderPrice)}</p>
+           {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
+           <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
+         </div>
+         <div>
+           주문하신 곳은 :
+           <div>{city} {countryName} {locality}</div>
+           lat: {latitude}, lng: {longitude}
+         </div>
+         <div className='cart'>
+           <div>당신이 주문한 목록은 ...</div>
+           {cart.map(c =>
+                <ul key={c.pizzaId}>
+                  <li>{c.name} Pizza : {c.quantity}개</li>
+                </ul>)}
+         </div>
+       </div>
   );
 }
 

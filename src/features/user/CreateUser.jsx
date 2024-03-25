@@ -1,11 +1,19 @@
 import { useState } from 'react';
+import {useDispatch, useSelector} from "react-redux";
+import {createUser} from "../../services/userSlice.js";
 
 function CreateUser() {
   const [username, setUsername] = useState('');
 
+  const dispatch = useDispatch();
   function handleSubmit(e) {
     e.preventDefault();
+    if(!username) return;
+    dispatch(createUser(username));
+    // setUsername('');
   }
+
+  console.log(useSelector(state => state))
 
   return (
     <form onSubmit={handleSubmit}>
