@@ -1,7 +1,7 @@
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
+import AppLayout from "./AppLayout.jsx";
 
 function Home() {
-  console.log(useSelector(state => state.user))
   return (
     <div>
       <h1>
