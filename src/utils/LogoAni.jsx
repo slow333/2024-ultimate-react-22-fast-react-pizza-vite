@@ -5,7 +5,7 @@ function LogoAni() {
   return (
     <Link to="/">
       <div className="container">
-        <div className="center-text"></div>
+        <div className="center-circle"></div>
         <div className="inside-circle-container">
           <div className="inside-circle"></div>
         </div>
