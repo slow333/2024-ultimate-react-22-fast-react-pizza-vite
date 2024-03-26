@@ -35,8 +35,8 @@ function Cart() {
     <div>
       <Link to="/menu">&larr; Back to menu</Link>
 
-      <h2>Your cart, {userName.toUpperCase()} </h2>
-      <h5>가입일: {formatDate(createdAt)} </h5>
+      <h2>Your cart, {userName ? userName.toUpperCase() : "No User Info"} </h2>
+      <h5>가입일: {userName ? formatDate(createdAt) : "no data"} </h5>
       {cart.map((c) => (
         <ul key={c.pizzaId}>
           <li>

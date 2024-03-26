@@ -3,7 +3,7 @@ import "./logo-ani.css";
 import { Link } from "react-router-dom";
 function LogoAni() {
   return (
-    <Link to="/">
+    <Link to="http://www.logcenter.info" target="_blank">
       <div className="container">
         <div className="center-circle"></div>
         <div className="inside-circle-container">
