@@ -29,7 +29,7 @@ const fakeCart = [
 
 function Cart() {
   const cart = fakeCart;
-  const { userName, createdAt } = useSelector((state) => state.customer);
+  const { userName, createdAt } = useSelector((state) => state.userInfo);
 
   return (
     <div>

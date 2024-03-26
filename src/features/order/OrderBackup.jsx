@@ -60,9 +60,6 @@ function Order() {
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
 
-  const position = getMyCity();
-  const { city, countryName, locality, latitude, longitude } = position;
-
   return (
     <div>
       <div>
@@ -81,27 +78,10 @@ function Order() {
         <p>(Estimated delivery: {formatDate(estimatedDelivery)})</p>
       </div>
 
-      <div key={id}>
+      <div>
         <p>Price pizza: {formatCurrency(orderPrice)}</p>
         {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
         <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
-      </div>
-      <div>
-        주문하신 곳은 :
-        <div>
-          도시: {city}, 나라: {countryName}, 지역: {locality} <br />/ lat:{" "}
-          {latitude}, lng: {longitude}
-        </div>
-      </div>
-      <div className="cart">
-        <div>당신이 주문한 목록은 ...</div>
-        {cart.map((c) => (
-          <ul key={c.pizzaId}>
-            <li>
-              {c.name} Pizza : {c.quantity}개
-            </li>
-          </ul>
-        ))}
       </div>
     </div>
   );

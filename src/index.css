@@ -37,7 +37,10 @@ header {
   background-size: 20% 50%;
   animation: loading 1s infinite linear;
 }
-
+ul li {
+  margin-left: 25px;
+  list-style-type: none;
+}
 @keyframes loading {
   20% {
     background-position: 0% 0%, 50% 50%, 100% 50%;
