@@ -43,7 +43,7 @@ function CreateOrder() {
 
   return (
     <div>
-      <h2>Ready to order? go!</h2>
+      <h2>Ready to order? Let's go!</h2>
 
       {/* <Form method="POST" action="/order/new"> */}
       <Form method="POST">
@@ -101,7 +101,7 @@ export async function action({ request }) {
 
   const errors = {};
   if (!isValidPhone(order.phone))
-    errors.phone = "전화번호 형식이 맞지 않아요...";
+    errors.phone = "👉👉 전화번호 형식이 맞지 않아요...";
   if (Object.keys(errors).length > 0) return errors;
 
   const newOrder = await createOrder(order);

@@ -1,14 +1,18 @@
 import { useSelector } from "react-redux";
 import AppLayout from "./AppLayout.jsx";
+import {Link} from 'react-router-dom'
+import CreateUser from "../features/user/CreateUser.jsx";
 
 function Home() {
   return (
-    <div>
-      <h1>
+    <div className="flex flex-col items-center contents-center">
+      <h1 className=" font-bold text-2xl text-stone-400/70 text-center my-6 
+        md:text-3xl">
         The best pizza.
         <br />
-        Straight out of the oven, straight to you.
+        <span className="text-yellow-600">Straight out of the oven, straight to you.</span>
       </h1>
+      <CreateUser/>
     </div>
   );
 }
