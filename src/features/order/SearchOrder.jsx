@@ -14,8 +14,13 @@ function SearchOrder() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input className="px-2 rounded-lg"
-        placeholder="search your order by Id"
+      <input className="px-3 py-2 text-sm bg-slate-100
+        rounded-full placeholder:text-slate-400
+        shadow-lg shadow-black/30
+        w-50 sm:w-58 sm:focus:w-68
+        focus:outline-none focus:ring focus:ring-slate-500 focus:ring-opacity-30
+        focus:w-58"
+        placeholder="search..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

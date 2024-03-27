@@ -12,6 +12,7 @@
   /* background: radial-gradient(#d2d0d0, #ffffff); */
   margin: 0;
   padding: 0;
+  z-index: 0;
 }
 .center-circle {
   position: absolute;
@@ -25,7 +26,7 @@
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: alternate;
-  z-index: 88;
+  z-index: 4;
 }
 .inside-circle-container {
   width: 26px;
@@ -34,7 +35,7 @@
   position: absolute;
   border-radius: 50%;
   background-color: #0030ce;
-  z-index: 10;
+  z-index: 3;
 }
 .inside-circle {
   width: 4px;

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createUser } from "../../services/userSlice.js";
+import Button from "../../ui/Button.jsx";
 
 function CreateUser() {
   const [username, setUsername] = useState("");
@@ -23,12 +24,12 @@ function CreateUser() {
         placeholder="Your full name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="my-3 px-3 py-2 w-72 rounded-lg "
+        className="w-7w input mt-8 mb-7"
       />
 
       {username !== "" && (
         <div>
-          <button>Start ordering</button>
+          <Button type='primary'>Start ordering</Button>
         </div>
       )}
     </form>

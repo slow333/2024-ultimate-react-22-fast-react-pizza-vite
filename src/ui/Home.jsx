@@ -7,7 +7,7 @@ function Home() {
   return (
     <div className="flex flex-col items-center contents-center">
       <h1 className=" font-bold text-2xl text-stone-400/70 text-center my-6 
-        md:text-3xl">
+        md:text-6xl">
         The best pizza.
         <br />
         <span className="text-yellow-600">Straight out of the oven, straight to you.</span>

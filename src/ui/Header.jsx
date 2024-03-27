@@ -7,20 +7,22 @@ import UserName from '../features/user/UserName.jsx';
 
 const Header = () => {
   return (
-    <header className="bg-yellow-600/80 uppercase
-    gap-2 sm:gap-4 flex items-center justify-around 
-    px-1 sm:px-4 tracking-[0.1rem]">
-      <div className="w-[54px]  hover:text-yellow-500 hover:text-bold">
-        <LogoAni/>
+    <header className="bg-slate-200 uppercase font-defaultWeb
+      rounded-xl shadow-lg font-mono py-1 
+      gap-2 sm:gap-4 flex items-center justify-between 
+      px-1 sm:px-4 ">
+        <div className="text-lg
+              font-bold	text-slate-700 font-mono">
+            Fast Pizza
+            </div>
+      <div className="w-[51px]">
+        <LogoAni />
       </div>
       <Link to="/" className=" hover:text-yellow-500 hover:text-bold">
         Home
       </Link>
       <Link to="/menu" className=" hover:text-yellow-500 hover:text-bold">
         Menu
-      </Link>
-      <Link to="/cart"className=" hover:text-yellow-500 hover:text-bold">
-        Cart
       </Link>
       <Link to="/order/new" className=" hover:text-yellow-500 hover:text-bold">
         Order New

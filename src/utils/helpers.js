@@ -1,7 +1,7 @@
 export function formatCurrency(value) {
-  return new Intl.NumberFormat("en", {
+  return new Intl.NumberFormat("ko-KR", {
     style: "currency",
-    currency: "EUR",
+    currency: "krw",
   }).format(value);
 }
 

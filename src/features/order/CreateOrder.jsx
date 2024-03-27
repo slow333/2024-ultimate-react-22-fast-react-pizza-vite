@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { Form, redirect, useActionData, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
-
+import Button from "../../ui/Button";
+import CheckBox from "../../ui/CheckBox";
+import InputForm from "../../ui/InputForm.jsx";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -42,47 +44,28 @@ function CreateOrder() {
   const formErrors = useActionData();
 
   return (
-    <div>
-      <h2>Ready to order? Let's go!</h2>
+    <div className="font-bodyFont ms-3">
+      <div className='mt-3 mb-5 text-2xl text-slate-600'>주문 준비가 되었나요 ? 주문하세요!</div>
 
       {/* <Form method="POST" action="/order/new"> */}
-      <Form method="POST">
-        <div>
-          <label>First Name</label>
-          <input type="text" name="customer" required />
+      <Form method="POST" className='divide-y-4'>
+        <InputForm type='text' name='customer' title='이름'></InputForm>
+        <InputForm type='tel' name='phone' title='전화번호'>
+          {formErrors?.phone &&
+               <p className='mt-2 text-red-500'>{formErrors.phone}</p>}
+        </InputForm>
+        <InputForm type='text' name='address' title="주소"></InputForm>
+
+        <div className='flex items-center justify-start gap-3 mt-3'>
+          <CheckBox handleChange={(e) => setWithPriority(e.target.checked)} value={withPriority}/>
+          <div className='italic text-sm'>빠른 배달을 원하세요?(추가 비용 발생)</div>
         </div>
 
-        <div>
-          <label>Phone number</label>
-          <div>
-            <input type="tel" name="phone" required />
-          </div>
-          {formErrors?.phone && <p>{formErrors.phone}</p>}
-        </div>
-
-        <div>
-          <label>Address</label>
-          <div>
-            <input type="text" name="address" required />
-          </div>
-        </div>
-
-        <div>
-          <input
-            type="checkbox"
-            name="priority"
-            id="priority"
-            // value={withPriority}
-            // onChange={(e) => setWithPriority(e.target.checked)}
-          />
-          <label htmlFor="priority">Want to yo give your order priority?</label>
-        </div>
-
-        <div>
+        <div className="mt-6">
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <button disabled={isSubmitting}>
-            {isSubmitting ? "submitting..." : "Order now"}
-          </button>
+          <Button disabled={isSubmitting} type='primary'>
+            {isSubmitting ? "submitting..." : "지금 주문"}
+          </Button>
         </div>
       </Form>
     </div>
