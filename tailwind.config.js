@@ -19,7 +19,7 @@ export default {
         huge: ['12rem', { lineHeight: '3'}]
       },
       height: {
-        screen: '95dvh',
+        screen: '98dvh',
       },
       boxShadow: {
         '3xl': '0 35px 60px -15px rgba(0, 0, 0, 0.3)',

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createUser } from "../../services/userSlice.js";
 import Button from "../../ui/Button.jsx";
+import {addCustomer} from "../../services/cartSlice.js";
 
 function CreateUser() {
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ function CreateUser() {
   function handleSubmit(e) {
     e.preventDefault();
     if (!username) return;
-    dispatch(createUser(username));
+    dispatch(addCustomer(username));
     setUsername("");
   }
 

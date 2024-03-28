@@ -1,50 +1,13 @@
 // Test ID: IIDSAT
 import {calcMinutesLeft, formatCurrency, formatDate,} from "../../utils/helpers.js";
-import {getMyCity} from "../../services/getMyCity.js";
 import {getOrder} from "../../services/apiRestaurant.js";
 import {useLoaderData} from "react-router-dom";
 import OrderItem from "./OrderItem.jsx";
-
-const order = {
-  id: "ABCDEF",
-  customer: "Jonas",
-  phone: "123456789",
-  address: "Arroios, Lisbon , Portugal",
-  priority: true,
-  estimatedDelivery: "2027-04-25T10:00:00",
-  cart: [
-    {
-      pizzaId: 7,
-      name: "Napoli",
-      quantity: 3,
-      unitPrice: 16,
-      totalPrice: 48,
-    },
-    {
-      pizzaId: 5,
-      name: "Diavola",
-      quantity: 2,
-      unitPrice: 16,
-      totalPrice: 32,
-    },
-    {
-      pizzaId: 3,
-      name: "Romana",
-      quantity: 1,
-      unitPrice: 15,
-      totalPrice: 15,
-    },
-  ],
-  position: "-9.000,38.000",
-  orderPrice: 95,
-  priorityPrice: 19,
-};
+import {useSelector} from "react-redux";
 
 function Order() {
   const order = useLoaderData();
-  // Everyone can search for all orders,
-  // so for privacy reasons we're gonna exclude names or address,
-  // these are only for the restaurant staff
+
   const {
     id,
     status,
@@ -56,18 +19,15 @@ function Order() {
   } = order;
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
-
-  const position = getMyCity();
-  const {city, countryName, locality, latitude, longitude} = position;
+  const {customer, phone, address} = useSelector(state => state.orderInfo)
 
   return (
        <div className='px-4 py-6 font-bodyFont space-y-8'>
          <div className='flex justify-between flex-wrap me-3'>
-           <h2 className='text-xl font-bold'>Order #{id} status</h2>
+           <h2 className='text-xl font-bold'>Order #{customer.toUpperCase()} {phone} </h2>status
            <div className='space-x-2'>
-             {true &&
+             {priority &&
                   <span className='bg-red-600 text-sm rounded-full px-3 py-1 text-red-200 uppercase'>Priority</span>}
-             {/*{priority && <span className='bg-red-600 text-sm' >Priority</span>}*/}
              <span
                   className='bg-slate-600 text-sm rounded-full px-3 py-1 text-slate-300 uppercase'>{status} order</span>
            </div>
@@ -75,17 +35,18 @@ function Order() {
          <div className='flex justify-between flex-wrap me-3 bg-gray-300 p-4 rounded-full'>
            <p>
              {deliveryIn >= 0
-                  ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
+                  ? `약 ${calcMinutesLeft(estimatedDelivery)}분 후 도착 😃`
                   : "Order should have arrived"}
            </p>
-           <p className='text-sm text-slate-600'>(Estimated delivery: {formatDate(estimatedDelivery)})</p>
+           <p className='text-sm text-slate-600'>(예상도착 시간 :
+             {formatDate(estimatedDelivery).split(' ').slice(2).join(" ")})</p>
          </div>
          <div>
            <div className='bg-slate-800 text-slate-300 text-xl p-3 rounded-2xl mb-5'>
              당신이 주문한 목록은 ...
            </div>
            <ul className='border-2 border-slate-400/40 divide-y divide-gray-400 p-4'>
-             {cart.map((c) => <OrderItem item={c} key={c.id} />)}
+             {cart.map((item) => <OrderItem item={item} key={item.id}/>)}
            </ul>
          </div>
 
@@ -93,17 +54,18 @@ function Order() {
            주문 금액
          </div>
          <div className='space-y-3 me-3 bg-gray-300 p-4 rounded-lg'>
-           <p>Price pizza: {formatCurrency(orderPrice)}</p>
-           {true && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
+           <p>Price pizza: {formatCurrency(orderPrice, 1000)}</p>
+           {priority && <p>Price priority: {formatCurrency(priorityPrice, 1000)}</p>}
            {/*{priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}*/}
-           <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}</p>
+           <p>To pay on delivery: {formatCurrency(orderPrice + priorityPrice, 1000)}</p>
          </div>
          <div className='bg-slate-800 text-slate-300 text-xl p-3 rounded-2xl'>
-           주문하신 곳은 </div>
-         <div  className='me-3 bg-gray-300 p-4 rounded-full'>
-          도시: {city}, 나라: {countryName}, 지역: {locality},  lat:{" "}
-           {latitude}, lng: {longitude}
-        </div>
+           주문하신 곳은
+         </div>
+         <div className='me-3 bg-gray-300 p-4 rounded-full'>
+           {/*{city}시 {locality}동 ({latitude}, {longitude}) */}
+           {address}
+         </div>
        </div>
   );
 }

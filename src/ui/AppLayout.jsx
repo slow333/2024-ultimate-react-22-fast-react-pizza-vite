@@ -9,20 +9,20 @@ const AppLayout = () => {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
 
-  const { userName, createdAt } = useSelector((state) => state.userInfo);
+  const { customer, cart } = useSelector((state) => state.orderInfo);
 
   return (
-    <div className="grid h-screen grid-rows-[auto_1fr_auto]">
+    <div className="grid h-screen grid-rows-[auto_auto_1fr]">
       {isLoading && <Loader />}
       {/* {true && <Loader />} */}
       <Header />
+      {(customer || cart.length > 0) && <CartOverview/>}
       <div className="mt-5">
         <main className="mx-auto">
           <Outlet />
         </main>
       </div>
-      {/* {userName && <CartOverview />}       */}
-      <CartOverview />
+      {/* {userName && <CartOverview />} */}
     </div>
   );
 };

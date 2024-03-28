@@ -9,7 +9,7 @@ function CartItem({ item }) {
         {quantity}&times; {name}
       </p>
       <div>
-        <p>{formatCurrency(totalPrice)}</p>
+        <p>{formatCurrency(totalPrice, 1000)}</p>
       </div>
     </li>
   );
