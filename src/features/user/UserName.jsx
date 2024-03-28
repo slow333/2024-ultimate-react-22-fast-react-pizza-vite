@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
+import {useSelector} from "react-redux";
 
-class UserName extends Component {
-  render() {
-    return (
-      <div className='text-sm font-semibold italic'>
-        React vite
-      </div>
-    );
-  }
+function UserName() {
+  const {customer} = useSelector(state => state.orderInfo);
+
+  return (
+    <div className='text-sm font-semibold italic'>
+      {customer}
+    </div>
+  );
 }
 
 export default UserName;

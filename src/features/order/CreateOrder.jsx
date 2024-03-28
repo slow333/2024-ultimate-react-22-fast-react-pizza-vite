@@ -6,7 +6,7 @@ import Button from "../../ui/Button";
 import CheckBox from "../../ui/CheckBox";
 import {useDispatch, useSelector} from "react-redux";
 import {getMyCity} from "../../services/getMyCity.js";
-import {addAddress, addCustomer, addPhone} from "../../services/cartSlice.js";
+import {addAddress, addCustomer, addPhone} from "../../services/orderSlice.js";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -16,12 +16,11 @@ const isValidPhone = (str) =>
 function CreateOrder() {
   const position = getMyCity();
   const {city, locality, latitude, longitude} = position;
-
+  const {customer : name} = useSelector(state => state.orderInfo)
   const positionAddress = [city, locality].join(' ');
 
   const [withPriority, setWithPriority] = useState(false);
-
-  const [customer, setCustomer] = useState('');
+  const [customer, setCustomer] = useState(name);
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState(positionAddress);
 

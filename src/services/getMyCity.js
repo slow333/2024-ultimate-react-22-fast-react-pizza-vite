@@ -2,7 +2,7 @@
 import {useEffect, useState} from 'react';
 import {getAddress} from "./apiGeocoding.js";
 
-export const getMyCity = () => {
+export function getMyCity () {
   const [city, setCity] = useState({})
 
   useEffect(() => {
@@ -10,7 +10,7 @@ export const getMyCity = () => {
 
     function success(pos) {
       const crd = pos.coords;
-      const newPos = {latitude: crd.latitude, longitude: crd.longitude}
+      const newPos = { latitude: crd.latitude, longitude: crd.longitude}
       // console.log(newPos.latitude, newPos.longitude)
       getAddress(newPos).then(data => setCity(data));
     }

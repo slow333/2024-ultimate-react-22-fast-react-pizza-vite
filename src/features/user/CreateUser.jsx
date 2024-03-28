@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "../../ui/Button.jsx";
-import {addCustomer} from "../../services/cartSlice.js";
+import {addCustomer} from "../../services/orderSlice.js";
 
 function CreateUser() {
   const [username, setUsername] = useState("");

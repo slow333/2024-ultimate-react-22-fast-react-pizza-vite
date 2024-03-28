@@ -5,7 +5,8 @@ function CartOverview() {
 
   const {cart} = useSelector(state => state.orderInfo);
   // const order = useLoaderData();
-  console.log(cart)
+  // console.log(cart)
+  const total = cart.map(c => c.totalPrice).reduce((acc, curr) => acc + curr,0);
 
   return (
     <div className="bg-slate-800 text-stone-200/70 p-1 text-sm mt-5 mb-2
@@ -15,7 +16,7 @@ function CartOverview() {
       <p>
         <span>{cart.length > 0 ? cart.length : "no order"} pizzas </span>
         <span>{cart.customer && cart.customer} </span>
-        <span>{cart.length > 0 ? cart.reducer((acc, curr) => acc + curr.totalPrice, 0) : "no order"}</span>
+        <span>total : ${total && total}</span>
       </p>
       <Link to='/cart' className="align-end">Open cart &rarr;</Link>
 

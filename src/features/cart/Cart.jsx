@@ -1,12 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Link, useLoaderData } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { formatDate } from "../../utils/helpers";
 import LinkButton from "../../ui/LinkButton";
 import Button from "../../ui/Button";
 import CartItem from '../../features/cart/CartItem'
 import {formatCurrency} from "../../utils/helpers.js"
-
 
 function Cart() {
   const {cart, customer} = useSelector(state => state.orderInfo);

@@ -41,10 +41,6 @@ const router = createBrowserRouter([
         path: "/user",
         element: <CreateUser />,
       },
-      // {
-      //   element: <CartOverview/>,
-      //   loader: overviewLoader,
-      // },
     ],
   },
 ]);

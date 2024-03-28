@@ -4,8 +4,7 @@
 import Button from "../../ui/Button";
 import { formatCurrency } from "../../utils/helpers";
 import {useDispatch, useSelector} from "react-redux";
-import {addCart} from "../../services/cartSlice.js";
-import {useState} from "react";
+import {addCart} from "../../services/orderSlice.js";
 
 function MenuItem({ pizza }) {
   // console.log(pizza)
@@ -21,7 +20,6 @@ function MenuItem({ pizza }) {
     dispatch(addCart(order))
   }
 
-  // console.log(useSelector(stat => stat.cart))
   return (
     <li className="flex gap-4 py-2">
       <img src={imageUrl} alt={name} 
