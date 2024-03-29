@@ -5,12 +5,14 @@ const initialState = {
   userName: "",
   createdAt: "",
   userId: "",
+  phone:'',
+  address:'',
 };
 const userSlice = createSlice({
-  name: "userInfo",
+  name: "user",
   initialState,
   reducers: {
-    createUser: {
+/*    createUser: {
       prepare(userName) {
         return {
           payload: {
@@ -25,9 +27,20 @@ const userSlice = createSlice({
         state.createdAt = action.payload.createdAt;
         state.userId = action.payload.userId;
       },
+    },*/
+    updateName(state,action) {
+      state.userName = action.payload;
+    },
+    updatePhone(state, action) {
+      state.phone = action.payload;
+    },
+    updateAddress(state, action) {
+      state.address = action.payload;
     },
   },
 });
 
-export const { createUser } = userSlice.actions;
+export const { updatePhone,  updateName, updateAddress} = userSlice.actions;
 export default userSlice.reducer;
+
+export const getUsername = state => state.user.userName;

@@ -1,18 +1,21 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "../../ui/Button.jsx";
-import {addCustomer} from "../../services/orderSlice.js";
+import {updateName} from "./userSlice.js";
+import {useNavigate} from "react-router-dom";
 
 function CreateUser() {
   const [username, setUsername] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!username) return;
-    dispatch(addCustomer(username));
+    dispatch(updateName(username));
     setUsername("");
+    navigate('/menu')
   }
 
   return (
@@ -24,7 +27,7 @@ function CreateUser() {
         placeholder="Your full name"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="w-7w input mt-8 mb-7"
+        className="w-72 input mt-8 mb-7 px-5 py-3"
       />
 
       {username !== "" && (

@@ -19,9 +19,12 @@ const Header = () => {
       </div>
       <Link to="/" className="hover:text-yellow-500 hover:text-bold">
         Home </Link>
-
+      <Link to="/order/new" className="hover:text-yellow-500 hover:text-bold">
+        order </Link>
       <Link to="/menu" className="hover:text-yellow-500 hover:text-bold">
         Menu </Link>
+      <Link to="/cart" className="hover:text-yellow-500 hover:text-bold">
+        cart </Link>
       <SearchOrder/>
       <div className="hidden sm:block">
         <UserName/>

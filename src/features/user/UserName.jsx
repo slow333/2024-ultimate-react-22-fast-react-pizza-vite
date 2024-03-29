@@ -1,12 +1,14 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {useSelector} from "react-redux";
 
 function UserName() {
-  const {customer} = useSelector(state => state.orderInfo);
+  const {userName} = useSelector(state => state.user);
+
+  if(!userName) return null;
 
   return (
-    <div className='text-sm font-semibold italic'>
-      {customer}
+    <div className='hidden text-sm font-semibold italic md:block'>
+      {userName}
     </div>
   );
 }

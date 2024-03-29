@@ -9,14 +9,14 @@ const AppLayout = () => {
   const navigation = useNavigation();
   const isLoading = navigation.state === "loading";
 
-  const { customer, cart } = useSelector((state) => state.orderInfo);
+  const { userName } = useSelector((state) => state.user);
+  const { cart } = useSelector((state) => state.cart);
 
   return (
     <div className="grid h-screen grid-rows-[auto_auto_1fr]">
       {isLoading && <Loader />}
-      {/* {true && <Loader />} */}
       <Header />
-      {(customer || cart.length > 0) && <CartOverview/>}
+      <CartOverview/>
       <div className="mt-5">
         <main className="mx-auto">
           <Outlet />
