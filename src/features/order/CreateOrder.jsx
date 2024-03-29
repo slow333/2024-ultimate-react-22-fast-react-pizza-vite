@@ -14,17 +14,15 @@ const isValidPhone = (str) =>
   );
 
 function CreateOrder() {
-  const position = getMyCity();
-  const {city, locality, latitude, longitude} = position;
-  const {customer : name} = useSelector(state => state.orderInfo)
-  const positionAddress = [city, locality].join(' ');
+  const {city, locality, latitude, longitude} = getMyCity();
+  const positionAddress = city && 'HOME 💥';
+
+  const {cart, customer : name, phone: phoneNum, address:addressPos} = useSelector(state => state.orderInfo)
 
   const [withPriority, setWithPriority] = useState(false);
   const [customer, setCustomer] = useState(name);
-  const [phone, setPhone] = useState('');
+  const [phone, setPhone] = useState(phoneNum);
   const [address, setAddress] = useState(positionAddress);
-
-  const { cart } = useSelector(state => state.orderInfo);
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
@@ -36,8 +34,9 @@ function CreateOrder() {
     dispatch(addPhone(phone));
     dispatch(addCustomer(customer));
     dispatch(addAddress(address));
-  }, [phone, customer, address, dispatch]);
+  }, [customer, phone, address, navigation]);
 
+  console.log("order ===> ", name, cart, phoneNum, address)
   return (
     <div className="font-bodyFont ms-3">
       <div className='mt-3 mb-5 text-2xl text-slate-600'>주문 준비가 되었나요 ? 주문하세요!</div>
@@ -49,17 +48,17 @@ function CreateOrder() {
           <div className='flex flex-col gap-2 mt-3 ms-3 me-6 sm:flex-row sm:items-center'>
             <div className='w-24'>이름</div>
             <input className="input w-full"
-                   type='text' name='customer' value={customer}
+                   type='text' name='customer' value={`${customer || name}`}
                    onChange={(e) => setCustomer(e.target.value)} required/>
           </div>
-          {!customer && <p className='mt-2 text-red-500'>사용자를 추가하세요.</p>}
+          {!customer || !name  && <p className='mt-2 text-red-500'>사용자를 추가하세요.</p>}
         </div>
 
         <div className='flex flex-col gap-2'>
           <div className='flex flex-col gap-2 mt-3 ms-3 me-6 sm:flex-row sm:items-center'>
             <div className='w-24'>전화번호</div>
             <input className="input w-full"
-                   type='tel' name='phone' value={phone}
+                   type='tel' name='phone' value={phone || phoneNum}
                    onChange={(e) => setPhone(e.target.value)} required/>
           </div>
           {formErrors?.phone &&
@@ -70,7 +69,7 @@ function CreateOrder() {
           <div className='flex flex-col gap-2 mt-3 ms-3 me-6 sm:flex-row sm:items-center'>
             <div className='w-24'>주소</div>
             <input className="input w-full"
-                   type='text' name='address' value={address}
+                   type='text' name='address' value={address || positionAddress || addressPos}
                    onChange={(e) => setAddress(e.target.value)} required/>
           </div>
           {!address && <p className='mt-2 text-red-500'>주소를 추가하세요.</p>}

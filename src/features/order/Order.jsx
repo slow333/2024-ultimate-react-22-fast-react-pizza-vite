@@ -7,19 +7,18 @@ import {useSelector} from "react-redux";
 
 function Order() {
   const order = useLoaderData();
+  console.log(order)
 
-  const {
-    id,
-    status,
-    priority,
-    priorityPrice,
-    orderPrice,
+  const { id, status,  priority,
+    priorityPrice, orderPrice,
     estimatedDelivery,
-    cart,
+    cart, customer
   } = order;
 
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
-  const {customer, phone, address} = useSelector(state => state.orderInfo)
+  const { phone, address } = useSelector(state => state.orderInfo)
+  console.log(phone, address)
+
 
   return (
        <div className='px-4 py-6 font-bodyFont space-y-8'>
