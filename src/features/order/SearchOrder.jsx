@@ -19,7 +19,7 @@ function SearchOrder() {
         w-50
         sm:w-64 sm:focus:w-80
         focus:outline-none focus:ring focus:ring-slate-500 focus:ring-opacity-30 focus:w-64"
-        placeholder="search..."
+        placeholder="search by order id..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />

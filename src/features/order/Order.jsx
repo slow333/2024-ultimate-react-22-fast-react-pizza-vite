@@ -1,16 +1,24 @@
 // Test ID: IIDSAT
 import {calcMinutesLeft, formatDate,} from "../../utils/helpers.js";
 import {getOrder} from "../../services/apiRestaurant.js";
-import {useLoaderData} from "react-router-dom";
+import {useFetcher, useLoaderData} from "react-router-dom";
 import OrderItem from "./OrderItem.jsx";
 import {useSelector} from "react-redux";
 import OrderPrice from "./OrerPrice.jsx";
 import OrderTitle from "./OrderTitle.jsx";
 import OrderStatus from "./OrderStatus.jsx";
 import {fetchAddress} from "../user/userSlice.js";
+import {useEffect} from "react";
+import UpdateOrder from "./UpdateOrder.jsx";
 
 function Order() {
   const order = useLoaderData();
+  const fetcher = useFetcher()
+
+  useEffect(() => {
+    if(!fetcher.data && fetcher.state === 'idle')
+      fetcher.load('/menu')
+  }, [fetcher]);
 
   const {
     id, status, priority,
@@ -37,10 +45,15 @@ function Order() {
       </div>
       <OrderTitle>주문한 목록</OrderTitle>
       <ul className='border-2 border-slate-400/40 divide-y divide-gray-400 p-4'>
-        {cart.map((item) => <OrderItem item={item} key={item.pizzaId}/>)}
+        {cart.map((item) =>
+          <OrderItem
+            item={item} key={item.pizzaId}
+            ingredients={fetcher?.data?.find(el => el.id === item.pizzaId)?.ingredients} isLoadingIngredients={fetcher.state === 'loading'}/>)}
       </ul>
       <OrderTitle>주문 금액</OrderTitle>
-      <OrderPrice priorityPrice={priorityPrice} orderPrice={orderPrice} priority={priority}/>
+      <OrderPrice priorityPrice={priorityPrice} orderPrice={orderPrice} priority={priority}>
+        {!priority && <UpdateOrder></UpdateOrder>}
+      </OrderPrice>
       <OrderTitle>주문하신 곳은</OrderTitle>
       <div className='me-3 bg-gray-300 p-4 rounded-full'>
         {address}

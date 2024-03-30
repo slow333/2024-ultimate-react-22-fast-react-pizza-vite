@@ -13,16 +13,16 @@ const Header = () => {
       px-1 sm:px-4 ">
       <div className='flex items-center gap-3'>
         <div className="w-[51px]"><LogoAni/></div>
-        <div className="text-sm font-bold text-slate-700 font-mono">
-          Fast Pizza
-        </div>
+        <Link to="/" className="hover:text-yellow-500 hover:text-bold">
+          <div className="text-sm font-bold text-slate-700 font-mono">
+            Fast Pizza
+          </div>
+        </Link>
       </div>
-      <Link to="/" className="hover:text-yellow-500 hover:text-bold">
-        Home </Link>
-      <Link to="/order/new" className="hover:text-yellow-500 hover:text-bold">
-        order </Link>
       <Link to="/menu" className="hover:text-yellow-500 hover:text-bold">
         Menu </Link>
+      <Link to="/order/new" className="hover:text-yellow-500 hover:text-bold">
+        order </Link>
       <Link to="/cart" className="hover:text-yellow-500 hover:text-bold">
         cart </Link>
       <SearchOrder/>

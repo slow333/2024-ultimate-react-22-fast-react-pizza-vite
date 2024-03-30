@@ -8,6 +8,8 @@ import Error from "./ui/Error.jsx";
 import CreateOrder, {
   action as createOrderAction,
 } from "./features/order/CreateOrder.jsx";
+import {action as orderUpdateAction} from "./features/order/UpdateOrder.jsx";
+
 import AppLayout from "./ui/AppLayout.jsx";
 
 const router = createBrowserRouter([
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
         element: <Order />,
         loader: orderLoader,
         errorElement: <Error />,
+        action: orderUpdateAction,
       },
       {
         path: "/user",
