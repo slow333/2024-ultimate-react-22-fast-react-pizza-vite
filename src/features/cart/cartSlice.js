@@ -57,6 +57,7 @@ export const getTotalCartQuantity = (state) =>
 
 export const getTotalCartPrice = (state) =>
   state.cart.cart.reduce((sum, item) => sum + item.totalPrice, 0)
+
 // 성능 이슈 있으면 나중에 'reselect' 라이브러리 사용
 export const getCart = state => state.cart.cart
 export default cartSlice.reducer;

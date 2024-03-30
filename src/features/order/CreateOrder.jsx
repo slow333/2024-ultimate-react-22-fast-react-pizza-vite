@@ -1,12 +1,15 @@
 /* eslint-disable no-unused-vars */
 import React, {useEffect, useState} from "react";
 import {Form, redirect, useActionData, useNavigation} from "react-router-dom";
-import { createOrder } from "../../services/apiRestaurant";
+import {createOrder} from "../../services/apiRestaurant";
 import Button from "../../ui/Button";
 import CheckBox from "../../ui/CheckBox";
 import {useDispatch, useSelector} from "react-redux";
-import {updateAddress, updatePhone} from "../user/userSlice.js";
+import {fetchAddress, updateAddress, updateName, updatePhone} from "../user/userSlice.js";
 import LinkButton from "../../ui/LinkButton.jsx";
+import {getTotalCartPrice} from "../cart/cartSlice.js";
+import {formatCurrency} from "../../utils/helpers.js";
+import CreateOrderInput from "./CreateOrderInput.jsx";
 // https://uibakery.io/regex-library/phone-number
 const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
@@ -15,23 +18,23 @@ const isValidPhone = (str) =>
 
 function CreateOrder() {
 
-  const {userName, phone, address} = useSelector(state => state.user);
-  const cart = useSelector(state => state.cart.cart);
-  const dispatch = useDispatch();
-
   const [withPriority, setWithPriority] = useState(false);
-  // const [phoneNum, setPhoneNum] = useState('');
-  // const [address, setAddress] = useState('')
+  const {userName, phone, address, status: addressStatus, position, error:errorAddress}
+    = useSelector(state => state.user);
+  const isLoadingAddress = addressStatus === 'loading';
+
+  const cart = useSelector(state => state.cart.cart);
+  const totalCartPrice = useSelector(getTotalCartPrice)
+  const totalPriorityPrice = withPriority ? totalCartPrice * 0.2 : 0;
+  const totalPrice = totalCartPrice + totalPriorityPrice;
+  const dispatch = useDispatch();
+  // const address = fetchAddress();
+  // console.log(address)
 
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
   const formErrors = useActionData();
-
-  // useEffect(() => {
-  //   dispatch(updatePhone(phoneNum));
-  //   dispatch(updateAddress(address))
-  // }, [phoneNum, address]);
 
   return (
     <div className="font-bodyFont ms-3">
@@ -40,51 +43,41 @@ function CreateOrder() {
       {/* <Form method="POST" action="/order/new"> */}
       <Form method="POST" className='divide-y-4'>
 
-        <div className='flex flex-col gap-2'>
-          <div className='flex flex-col gap-2 mt-3 ms-3 me-6 sm:flex-row sm:items-center'>
-            <div className='w-24'>이름</div>
-            <input className="input w-full"
-                   type='text' name='customer' defaultValue={userName}
-                   // onChange={(e) => setCustomer(e.target.value)}
-                   required/>
-          </div>
-          {/*{!customer  && <p className='mt-2 text-red-500'>사용자를 추가하세요.</p>}*/}
-        </div>
+        <CreateOrderInput onChange={(e) => dispatch(updateName(e.target.value))}
+                          value={userName} label='이름' type='text' name='customer'>
+          {/*  /!*{!customer  && <p className='mt-2 text-red-500'>사용자를 추가하세요.</p>}*!/*/}
+        </CreateOrderInput>
 
-        <div className='flex flex-col gap-2'>
-          <div className='flex flex-col gap-2 mt-3 ms-3 me-6 sm:flex-row sm:items-center'>
-            <div className='w-24'>전화번호</div>
-            <input className="input w-full"
-                   type='tel' name='phone'
-                   value={phone}
-                   onChange={(e) => dispatch(updatePhone(e.target.value))}
-                   required/>
-          </div>
+        <CreateOrderInput onChange={(e) => {
+          e.preventDefault();
+          dispatch(updatePhone(e.target.value));
+        }} value={phone} label='전화번호' type='tel' name='phone'>
           {formErrors?.phone &&
-               <p className='mt-2 text-red-500'>{formErrors.phone}</p>}
-        </div>
+            <p className='mt-2 text-red-500'>{formErrors.phone}</p>}
+        </CreateOrderInput>
 
-        <div className='flex flex-col gap-2'>
-          <div className='flex flex-col gap-2 mt-3 ms-3 me-6 sm:flex-row sm:items-center'>
-            <div className='w-24'>주소</div>
-            <input className="input w-full"
-                   type='text' name='address' value={address}
-                   onChange={(e) => dispatch(updateAddress(e.target.value))}
-                   required/>
-          </div>
-        </div>
+        <CreateOrderInput onChange={(e) => dispatch(updateAddress(e.target.value))}
+                          value={address} label='주소' type='text' name='address' disabled={isLoadingAddress}
+        >
+          {errorAddress &&
+            <span className='me-3 text-red-500 font-bold italic'>{errorAddress}</span>
+          }
+          {!position.latitude && !position.longitude && !errorAddress &&
+            <Button type='base' disabled={isLoadingAddress}
+                    onClick={() => dispatch(fetchAddress())}>Get Position</Button>}
+        </CreateOrderInput>
 
-        <div className='flex items-center justify-start gap-3 mt-3 ps-3'>
-          <CheckBox handleChange={(e) => setWithPriority(e.target.checked)}
-                    value={withPriority} name='priority'/>
-          <div className='italic text-sm'>빠른 배달을 원하세요?(추가 비용 발생)</div>
-        </div>
+        <CheckBox onChange={(e) => setWithPriority(e.target.checked)} value={withPriority}/>
 
         <div className="mt-6">
           <input type="hidden" name="cart" value={JSON.stringify(cart)}/>
-          { cart.length > 0
+          <input type="hidden" name="position"
+                 value={(position.latitude && position.longitude)
+                   ? `${position.latitude},${position.longitude}`
+                   :''}/>
+          {cart.length > 0
             ? <Button disabled={isSubmitting} type='primary'>
-              {isSubmitting ? "submitting..." : "지금 주문"} </Button>
+              {isSubmitting ? "submitting..." : "지금 주문 : " + formatCurrency(totalPrice)} </Button>
             : <LinkButton to='/menu'>&larr; Cart is empty</LinkButton>
           }
         </div>
@@ -100,10 +93,9 @@ export async function action({request}) {
   const order = {
     ...data,
     cart: JSON.parse(data.cart),
-    priority: data.priority,
+    priority: data.priority === 'true',
   };
   console.log(order)
-
   const errors = {};
   if (!isValidPhone(order.phone))
     errors.phone = "👉👉 전화번호 형식이 맞지 않아요...";

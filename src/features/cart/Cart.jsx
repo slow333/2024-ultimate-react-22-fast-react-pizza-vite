@@ -5,13 +5,11 @@ import LinkButton from "../../ui/LinkButton";
 import Button from "../../ui/Button";
 import CartItem from '../../features/cart/CartItem'
 import {formatCurrency} from "../../utils/helpers.js"
-import {getMenu} from "../../services/apiRestaurant.js";
 import {clearCart, deleteItem, getCart} from "./cartSlice.js";
 import {getUsername} from "../user/userSlice.js";
 import EmptyCart from "./EmptyCart.jsx";
 
 function Cart() {
-  const menu = useLoaderData();
   const cart = useSelector(getCart);
   const username = useSelector(getUsername);
   const dispatch = useDispatch();
@@ -42,10 +40,6 @@ function Cart() {
       </div>
     </div>
   );
-}
-export async function loader() {
-  const menu = await getMenu();
-  return menu;
 }
 
 export default Cart;
